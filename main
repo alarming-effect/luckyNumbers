@@ -1,0 +1,81 @@
+def increment_seq(number, number_plus1, number_plus2):
+    #all the tests that require number converted to string:
+    decreasing = '9876543210'
+    increasing = '1234567890'
+    num=str(number)
+    num1=str(number_plus1)
+    num2=str(number_plus2)
+    
+  #increasing and decreasing numbers
+    if (num in increasing) or (num in decreasing):
+            return 2
+    elif (num1 in decreasing) or (num1 in increasing):
+        return 1
+    elif (num2 in decreasing) or (num2 in increasing):
+        return 1
+    
+#The digits are a palindrome: 1221 or 73837
+    elif (num) == (num[::-1]):
+        return 2
+    elif ((num1) == (num1)[::-1]) or ((num2) == (num2)[::-1]):
+        return 1
+    
+#matches the awesome list
+def match_awesome(number, number_plus1, number_plus2, awesome_phrases):
+   if number in awesome_phrases:
+       return 2
+   if (number_plus1 in awesome_phrases) or (number_plus2 in awesome_phrases):
+       return 1
+        
+#Every digit is the same number: 1111       
+def all_same_digit(numbers_list, number_plus1_list, number_plus2_list):
+        if len(set(numbers_list)) == 1:
+            return 2
+        if (len(set(number_plus1_list)) 
+            or len(set(number_plus2_list))) == 1:
+            return 1
+                
+#Any digit followed by all zeros: 100, 90000
+def ends_in_all_zeros(numbers_list, number_plus1_list, number_plus2_list):
+    if all(v == 0 for v in numbers_list[1:]):
+        return 2
+    elif ( all(v == 0 for v in number_plus1_list[1:]) 
+            or all((v==0 for v in number_plus2_list[1:])) ):
+        return 1
+
+#----------------master function-----------------------------------
+def is_interesting(number, awesome_phrases):
+    number_plus1 = number + 1
+    number_plus2 = number + 2
+    numbers_list = [int(x) for x in str(number)]
+    number_plus1_list = [int(x) for x in str(number+1)]
+    number_plus2_list = [int(x) for x in str(number+2)]
+
+    #A number is only interesting if it is greater than 99! 
+    if number == 100: #this one doesnt like being in a function
+        return 2
+    elif number <=97:
+        return 0 #exclude all smaller numbers
+    elif (number == 98 or number == 99): #98 and 99 are about to be 100, which is awesome!
+        return 1
+    elif number>=100: #all other numbers will be run through the conditions
+
+#All other cases that could return 2     
+        if ((increment_seq(number, number_plus1, number_plus2))  
+            or (ends_in_all_zeros(numbers_list, number_plus1_list, number_plus2_list))
+            or (match_awesome(number, number_plus1, number_plus2, awesome_phrases))) ==  2:
+            return 2
+
+#All other cases that could return 1
+        elif ((match_awesome(number, number_plus1, number_plus2, awesome_phrases))
+            or (increment_seq(number, number_plus1, number_plus2)) 
+            or (ends_in_all_zeros(numbers_list, number_plus1_list, number_plus2_list)))  == 1:
+            return 1
+ 
+ #Did not come back for any method(i.e. not awesome)
+        else:
+            return 0
+
+#Input will always be an integer greater than 0, and less than 1,000,000,000.
+#The awesomePhrases array will always be provided, and will always be an array, but may be empty. (Not everyone thinks numbers spell funny words...)
+
